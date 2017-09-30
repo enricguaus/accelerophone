@@ -1,0 +1,9 @@
+The Arduino uses:
+
+MMA8452_Accelerometer from https://github.com/sparkfun/MMA8452_Accelerometer
+
+This library is unzipped to
+
+/Volumes/Macintosh HD/Applications/Arduino.app/Contents/Resources/Java/libraries
+
+
