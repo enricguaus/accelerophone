@@ -1,37 +1,39 @@
-#define MEAS_TIME 100
-#define TOUCH_SIG_PIN   8
-#define TOUCH_VCC_PIN   9
-#define TOUCH_GND_PIN  10
+#include <Wire.h>
+#include <SparkFun_MMA8452Q.h>
+#include "touch.h"
+#include "multisensor.h"
 
-int mainSwitch;
-int last_mainSwitch;
-int state_mainSwitch;
+// ---------------------
+// ---- DEFINITIONS ----
+// ---------------------
+#define MEAS_TIME 10
+#define N_SENSORS  4
+#define ATEN       0.999
 
-void setup(){
-  pinMode(TOUCH_SIG_PIN,INPUT);
-  pinMode(TOUCH_VCC_PIN,OUTPUT);
-  pinMode(TOUCH_GND_PIN,OUTPUT);
-  digitalWrite(TOUCH_VCC_PIN,HIGH);
-  digitalWrite(TOUCH_GND_PIN,LOW);
+// -------------------
+// ---- VARIABLES ----
+// -------------------
+Touch       mainSwitch(8,9,10);
+MultiSensor accelerometers;
 
-  mainSwitch       = 0;
-  last_mainSwitch  = 0;
-  state_mainSwitch = 0;
-  Serial.begin(9600);
+// ---------------
+// ---- SETUP ----
+// ---------------
+void setup(){  
+  while (!Serial) delay(1000);
+  Serial.begin(57600);
+  Wire.begin();
+  accelerometers.initSensors(N_SENSORS,ATEN);
 }
 
+// -------------------
+// ---- MAIN LOOP ----
+// -------------------
 void loop(){
-  mainSwitch=digitalRead(TOUCH_SIG_PIN);
-  if(mainSwitch==1 && last_mainSwitch==0){
-    if(state_mainSwitch==0){
-      state_mainSwitch=1;
-    }else{
-      state_mainSwitch=0;
-    }
-    Serial.print(state_mainSwitch);
-  }
-  last_mainSwitch=mainSwitch;
+  Serial.println(-100);
+  Serial.println(mainSwitch.get());
+  for(int i=0;i<accelerometers.getNSensors();i++)
+    Serial.println(accelerometers.getXYZDecay(i),3);
   delay(MEAS_TIME);
 }
-
 
