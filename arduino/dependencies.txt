@@ -1,9 +1,11 @@
-The Arduino uses:
+The Arduino scripts need the following libraries:
 
-MMA8452_Accelerometer from https://github.com/sparkfun/MMA8452_Accelerometer
+Wire                             (not installation required)
+MMA8452_Accelerometer            https://github.com/sparkfun/MMA8452_Accelerometer
 
-This library is unzipped to
+These libraries are downloaded and unzipped to:
 
 /Volumes/Macintosh HD/Applications/Arduino.app/Contents/Resources/Java/libraries
 
+The *.cpp and *.h files should be directly located under the library folder (i.e. not under a "src" folder or similar)
 
