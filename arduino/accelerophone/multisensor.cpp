@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "Wire.h"
+#include <SparkFun_MMA8452Q.h>
 #include "multisensor.h"
 
 MultiSensor::MultiSensor(void){
@@ -14,6 +15,7 @@ MultiSensor::~MultiSensor(void){
 }
 
 void MultiSensor::initSensors(int pNSensors, float pDecay){
+  //Wire.begin();
   setNSensors(pNSensors);
   setDecay(pDecay);
   for(int i=0;i<_nSensors;i++){
@@ -26,7 +28,7 @@ void MultiSensor::initSensors(int pNSensors, float pDecay){
 void MultiSensor::setNSensors(int pNSensors){
   _nSensors = pNSensors;
   if(_accelerometers) delete [] _accelerometers;
-  _accelerometers = new MMA8452Q[_nSensors];  
+  _accelerometers = new MMA8452Q[_nSensors]; 
   for(int i=0;i<_nSensors;i++){
     if((i%2)==0) _accelerometers[i]=MMA8452Q(0x1D);
     else         _accelerometers[i]=MMA8452Q(0x1C);
@@ -34,6 +36,7 @@ void MultiSensor::setNSensors(int pNSensors){
   if(_actXYZ) delete [] _actXYZ; _actXYZ=new float[_nSensors];
   if(_maxXYZ) delete [] _maxXYZ; _maxXYZ=new float[_nSensors];
 }
+
 int MultiSensor::getNSensors(void){
   return _nSensors;
 }
@@ -75,5 +78,5 @@ void MultiSensor::selectChannel(uint8_t i) { // Selects the reading input port f
   if (i > 7) return;
   Wire.beginTransmission(TCAADDR);
   Wire.write(1 << i);
-  Wire.endTransmission();  
+  Wire.endTransmission(); 
 }
